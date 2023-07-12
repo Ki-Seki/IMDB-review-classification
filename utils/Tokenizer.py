@@ -35,9 +35,44 @@ class Tokenizer:
             self.word_index[word] = index
             self.index_word.append(word)
 
-    def texts2seqs(self, texts: list) -> list:
+    def texts2seqs(self, texts: list, 
+                   filter_=lambda x: (x.islower() or x.isdigit()), 
+                   split_=str.split, 
+                   seq_len: int=None, padding_val: int=-1) -> list:
         """
         Convert the list of texts to their corresponding seqs.
         :param texts: list of str texts
+        :param seq_len: maximum length of each seq; None if padding of no need
+        :param padding_val: insert padding_val in front of seq if its len < seq_len
+
+        Padding examples:
+
+        [[1], [2, 3], [4, 5, 6]]
+        -> seq_len==3, padding_val==0 ->
+        [[0, 0, 1], [0, 2, 3], [4, 5, 6]]
+
+        [[1], [2, 3], [4, 5, 6]]
+        -> seq_len==2, padding_val==-2 ->
+        [[-2, 1], [2, 3], [5, 6]]
         """
-        pass
+        # Convert to sequences
+        seqs = []
+        for text in texts:
+            seq = []
+            words = split_(text)
+            for word in words:
+                word = word.lower()
+                word = ''.join(list(filter(filter_, word)))
+                index = self.word_index.get(word, None)
+                if index is not None:
+                    seq.append(index)
+            seqs.append(seq)
+
+        # Padding and truncation
+        for i in range (len(seqs)):
+            l = len(seqs[i])
+            if seq_len != None and l < seq_len:
+                seqs[i] = [padding_val] * (seq_len-l) + seqs[i]
+            elif seq_len != None and l > seq_len:
+                seqs[i] = seqs[i][l-seq_len:]
+        return seqs

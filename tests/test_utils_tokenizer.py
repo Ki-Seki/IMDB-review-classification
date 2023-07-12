@@ -60,7 +60,39 @@ class FitTest(unittest.TestCase):
 
 class Texts2SeqsTest(unittest.TestCase):
     def testNormalCase(self):
-        pass
+        texts = ['I love you love me！', 
+                 'HOW to find love is a question.',
+                 'this is only 1 test...',
+                 '$%^&*( 09*()) cool (* +-/+_!~!@~`1'')']
+        tk = Tokenizer(1000)
+        tk.fit_on_texts(texts)
+        seqs = tk.texts2seqs(['Do you love me?', 'Yes!', '1 is one', '2 is two'])
+
+        self.assertEqual(len(seqs), 4)
+
+        self.assertEqual(len(seqs[0]), 3)
+        self.assertEqual(len(seqs[1]), 0)
+        self.assertEqual(len(seqs[2]), 2)
+        self.assertEqual(len(seqs[3]), 1)
+
+        # love is the most frequent , so its index must be 0
+        self.assertEqual(seqs[0][1], 0)
+
+    def testPadding(self):
+        texts = ['I love you love me！', 
+                 'HOW to find love is a question.',
+                 'this is only 1 test...',
+                 '$%^&*( 09*()) cool (* +-/+_!~!@~`1'')']
+        tk = Tokenizer(1000)
+        tk.fit_on_texts(texts)
+        seqs = tk.texts2seqs(['Do you love me?', 'Yes!', 
+                              '1 is one', '2 is two'], 
+                              seq_len=5, padding_val=-2)
+        self.assertEqual(len(seqs), 4)
+        for i in range(4):
+            self.assertEqual(len(seqs[i]), 5)
+            self.assertEqual(seqs[i][0], -2)
+            self.assertEqual(seqs[i][1], -2)
 
 if __name__ == '__main__':
     unittest.main()
