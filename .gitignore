@@ -130,3 +130,6 @@ dmypy.json
 
 # Downloaded files
 resources/
+
+# VS Code Configurations
+.vscode/
