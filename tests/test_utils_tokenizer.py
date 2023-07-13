@@ -8,7 +8,7 @@ class InitTest(unittest.TestCase):
         tk = Tokenizer(100)
         self.assertEqual(tk.num_words, 100)
         self.assertEqual(tk.word_index, {})
-        self.assertEqual(tk.index_word, [])
+        self.assertEqual(tk.index_word, [''])
 
 
 class FitTest(unittest.TestCase):
@@ -18,9 +18,9 @@ class FitTest(unittest.TestCase):
         should match each other.
         """
         self.assertEqual(len(tk.word_index), length)
-        self.assertEqual(len(tk.index_word), length)
-        for i in range(length):
-            self.assertEqual(tk.word_index.get(tk.index_word[i], -1), i+1)
+        self.assertEqual(len(tk.index_word), length+1)
+        for i in range(1, length+1):
+            self.assertEqual(tk.word_index.get(tk.index_word[i], -1), i)
 
     def testDupInASentence(self):
         texts = ['I love you love me！']

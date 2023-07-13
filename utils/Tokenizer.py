@@ -6,7 +6,9 @@ class Tokenizer:
     def __init__(self, num_words) -> None:
         self.num_words = num_words  # Maximum words to be tokenized.
         self.word_index = {}  # {word: index}
-        self.index_word = []  # index_word[i] == word
+        self.index_word = ['']  # index_word[i] == word
+        # index_word[0] == '' is a placeholder
+        # because the padding value can be 0
 
     def fit_on_texts(self, texts: list, 
                      filter_=lambda x: (x.islower() or x.isdigit()), 
