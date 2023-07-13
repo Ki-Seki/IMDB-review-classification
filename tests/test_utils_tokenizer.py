@@ -20,7 +20,7 @@ class FitTest(unittest.TestCase):
         self.assertEqual(len(tk.word_index), length)
         self.assertEqual(len(tk.index_word), length)
         for i in range(length):
-            self.assertEqual(tk.word_index.get(tk.index_word[i], -1), i)
+            self.assertEqual(tk.word_index.get(tk.index_word[i], -1), i+1)
 
     def testDupInASentence(self):
         texts = ['I love you love me！']
@@ -76,7 +76,7 @@ class Texts2SeqsTest(unittest.TestCase):
         self.assertEqual(len(seqs[3]), 1)
 
         # love is the most frequent , so its index must be 0
-        self.assertEqual(seqs[0][1], 0)
+        self.assertEqual(seqs[0][1], 1)
 
     def testPadding(self):
         texts = ['I love you love me！', 

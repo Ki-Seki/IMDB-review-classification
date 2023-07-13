@@ -32,13 +32,13 @@ class Tokenizer:
 
         word_count = dict(sorted(word_count.items(), key=lambda item: item[1], reverse=True)[:self.num_words])
         for index, word in enumerate(word_count):
-            self.word_index[word] = index
+            self.word_index[word] = index + 1
             self.index_word.append(word)
 
     def texts2seqs(self, texts: list, 
                    filter_=lambda x: (x.islower() or x.isdigit()), 
                    split_=str.split, 
-                   seq_len: int=None, padding_val: int=-1) -> list:
+                   seq_len: int=None, padding_val: int=0) -> list:
         """
         Convert the list of texts to their corresponding seqs.
         :param texts: list of str texts
