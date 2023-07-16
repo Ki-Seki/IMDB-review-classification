@@ -43,7 +43,7 @@ class BasicTest(unittest.TestCase):
         train_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
         seqs, labels = next(iter(train_dataloader))
         self.assertEqual(seqs.size(), torch.Size([batch_size, seq_len]))
-        self.assertEqual(labels.size(), torch.Size([batch_size]))
+        self.assertEqual(labels.size(), torch.Size([batch_size, 1]))
 
 
     def testTokenizerReuse(self):
