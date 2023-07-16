@@ -26,7 +26,10 @@ class IMDBDataset(Dataset):
         seqs = self._tokenization(texts)
 
         self.seqs = torch.tensor(seqs)
-        self.labels = torch.tensor(labels).unsqueeze(1)
+        self.labels = torch.tensor(labels, dtype=torch.float).unsqueeze(1)
+        # PS. Though labels are either 1 or 0, it is recommended to use 
+        # `torch.float`, because, for example, nn.BCELoss() only supports 
+        # calculations between two `torch.float`.
     
     def __len__(self):
         return len(self.seqs)
